@@ -11,12 +11,12 @@
 
 # 3. Sensitive Variable Files (★보안 핵심)
 # 실제 API Key나 DB Password 등 비밀 데이터가 들어가는 변수 파일
-*.tfvars
-*.tfvars.json
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
+# *.tfvars
+# *.tfvars.json
+# override.tf
+# override.tf.json
+# *_override.tf
+# *_override.tf.json
 
 # 4. Crash Logs & Plan Files
 # plan 명령어 실행 결과물(민감 정보 포함 가능) 및 에러 로그
