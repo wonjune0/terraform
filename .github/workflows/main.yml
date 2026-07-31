@@ -43,7 +43,7 @@ jobs:
       - name: Terraform Plan
         env:
           TF_LOG: DEBUG
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var-file="seoul.tfvars"  
 
       # 바로 배포 진행
       - name: Terraform Apply
