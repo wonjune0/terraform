@@ -5,7 +5,7 @@ resource "aws_vpc" "tf_vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${var.pjt_name}_vpc1"
+    Name = "${var.pjt_name}_vpc"
   }
 }
 

@@ -10,6 +10,6 @@ variable "vpc_cidr_block" {
   type = string
 }
 
-variable "subnets" {
-  type = list(string)
+variable "s3_endpoint_service_name" {
+  type = string
 }
