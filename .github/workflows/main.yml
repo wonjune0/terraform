@@ -47,4 +47,4 @@ jobs:
 
       # 바로 배포 진행
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false -var-file="seoul.tfvars"
