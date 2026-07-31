@@ -17,6 +17,11 @@ variable "private_route_table_ids" {
 variable "s3_endpoint_service_name" {
   type = string
 }
+
 variable "pjt_name" {
+  type = string
+}
+
+variable "vpc_ecs_sg_id" {
   type = string
 }

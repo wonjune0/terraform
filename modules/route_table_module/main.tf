@@ -40,7 +40,7 @@ resource "aws_route_table_association" "tf_pri_rt_ass" {
 resource "aws_eip" "tf_nat_eip" {
   count = length(var.pri_subnets)
   tags = {
-    Name = "${var.pjt_name}_eip${count.index}"
+    Name = "${var.pjt_name}_eip${count.index + 1}"
   }
 }
 
