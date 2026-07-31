@@ -41,6 +41,8 @@ jobs:
 
       # 실제 리소스 변경 사항을 빌드 로그로 출력
       - name: Terraform Plan
+        env:
+          TF_LOG: DEBUG
         run: terraform plan -no-color
 
       # 바로 배포 진행
