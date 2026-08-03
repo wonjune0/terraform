@@ -13,3 +13,11 @@ variable "vpc_cidr_block" {
 variable "s3_endpoint_service_name" {
   type = string
 }
+
+variable "domain_name" {
+  type = string
+}
+
+variable "sub_domain" {
+  type = string
+}

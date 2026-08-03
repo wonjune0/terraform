@@ -4,7 +4,7 @@ data "aws_ec2_managed_prefix_list" "cloudfront" {
 }
 
 resource "aws_security_group" "tf_alb_sg" {
-  name   = "${var.pjt_name}-alb-sg"
+  name   = "${var.pjt_name}_alb_sg"
   vpc_id = var.vpc_id
 
   ingress {
@@ -21,12 +21,16 @@ resource "aws_security_group" "tf_alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  tags = {
+    Name = "${var.pjt_name}_alb_sg"
+  }
+
 
 }
 
 
 resource "aws_security_group" "tf_ecs_sg" {
-  name   = "${var.pjt_name}-ecs-sg"
+  name   = "${var.pjt_name}_ecs_sg"
   vpc_id = var.vpc_id
 
   ingress {
@@ -50,7 +54,7 @@ resource "aws_security_group" "tf_ecs_sg" {
 
 # ECR Endpoint Security group
 resource "aws_security_group" "tf_vpc_ecr_sg" {
-  name   = "${var.pjt_name}-vpc-ecr-sg"
+  name   = "${var.pjt_name}_vpc_ecr_sg"
   vpc_id = var.vpc_id
 
   ingress {

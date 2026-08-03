@@ -10,6 +10,10 @@ variable "alb_sg" {
   type = string
 }
 
-variable "prisubnet_ids" {
+variable "pubsubnet_ids" {
   type = list(string)
+}
+
+variable "cloudfront_secret_header_value" {
+  type = string
 }

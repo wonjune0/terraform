@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "tf_ecs_cluster" {
-  name = "${var.pjt_name}-cluster"
+  name = "${var.pjt_name}_cluster"
 
   setting {
     name  = "containerInsights"
@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "tf_ecs_cluster" {
 }
 
 resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
-  family                   = "${var.pjt_name}-task"
+  family                   = "${var.pjt_name}_task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
 }
 
 resource "aws_ecs_service" "tf_service" {
-  name            = "${var.pjt_name}-service"
+  name            = "${var.pjt_name}_service"
   cluster         = aws_ecs_cluster.tf_ecs_cluster.id
   task_definition = aws_ecs_task_definition.tf_ecs_task_definition.arn
   desired_count   = 2

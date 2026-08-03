@@ -28,20 +28,42 @@ resource "aws_lb" "tf_alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_sg]
-  subnets            = var.prisubnet_ids
+  subnets            = var.pubsubnet_ids
 
   tags = {
     Name = "${var.pjt_name}_alb"
   }
 }
 
-resource "aws_alb_listener" "tf_alb_listener" {
+resource "aws_lb_listener" "tf_alb_listener" {
   load_balancer_arn = aws_lb.tf_alb.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Access Denied: Direct access to ALB is not allowed."
+      status_code  = "403"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "tf_allow_cloudfront" {
+  listener_arn = aws_lb_listener.tf_alb_listener.arn
+  priority     = 10
+
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.tf_tg.arn
+  }
+
+  condition {
+    http_header {
+      http_header_name = "X-Custom-Header"
+      values           = [var.cloudfront_secret_header_value]
+    }
   }
 }

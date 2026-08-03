@@ -1,3 +1,10 @@
+resource "random_password" "cloudfront_secret" {
+  length  = 32
+  special = false
+}
+
+
+
 module "vpc" {
   source   = "./modules/vpc_module"
   vpc_cidr = var.vpc_cidr_block
@@ -45,11 +52,12 @@ module "security_groups" {
 }
 
 module "alb" {
-  source        = "./modules/alb_module"
-  vpc_id        = module.vpc.vpc_id
-  alb_sg        = module.security_groups.alb_sg_id
-  prisubnet_ids = module.subnet.prisubnet_ids
-  pjt_name      = var.pjt_name
+  source                         = "./modules/alb_module"
+  vpc_id                         = module.vpc.vpc_id
+  alb_sg                         = module.security_groups.alb_sg_id
+  pubsubnet_ids                  = module.subnet.pubsubnet_ids
+  pjt_name                       = var.pjt_name
+  cloudfront_secret_header_value = random_password.cloudfront_secret.result
 }
 
 module "s3" {
@@ -69,4 +77,21 @@ module "ecs" {
   ecs_sg_id              = module.security_groups.ecs_sg_id
   alb_target_group_arn   = module.alb.alb_target_group_arn
   pjt_name               = var.pjt_name
+}
+
+module "cloudfront" {
+  source                         = "./modules/cloudfront_module"
+  alb_dns_name                   = module.alb.alb_dns_name
+  cloudfront_secret_header_value = random_password.cloudfront_secret.result
+  sub_domain                     = var.sub_domain
+  acm_certificate_arn            = module.route53.acm_certificate_arn
+  pjt_name                       = var.pjt_name
+}
+
+module "route53" {
+  source                    = "./modules/rout53_module"
+  domain_name               = var.domain_name
+  sub_domain                = var.sub_domain
+  cloudfront_domain_name    = module.cloudfront.cloudfront_domain_name
+  cloudfront_hosted_zone_id = module.cloudfront.cloudfront_hosted_zone_id
 }
