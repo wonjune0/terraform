@@ -3,7 +3,7 @@ data "aws_ec2_managed_prefix_list" "cloudfront" {
   name = "com.amazonaws.global.cloudfront.origin-facing"
 }
 
-resource "aws_security_group" "tf-alb-sg" {
+resource "aws_security_group" "tf_alb_sg" {
   name   = "${var.pjt_name}-alb-sg"
   vpc_id = var.vpc_id
 
@@ -25,7 +25,7 @@ resource "aws_security_group" "tf-alb-sg" {
 }
 
 
-resource "aws_security_group" "tf-ecs-sg" {
+resource "aws_security_group" "tf_ecs_sg" {
   name   = "${var.pjt_name}-ecs-sg"
   vpc_id = var.vpc_id
 
@@ -33,7 +33,7 @@ resource "aws_security_group" "tf-ecs-sg" {
     from_port       = var.container_port
     to_port         = var.container_port
     protocol        = "tcp"
-    security_groups = [aws_security_group.tf-alb-sg.id]
+    security_groups = [aws_security_group.tf_alb_sg.id]
   }
 
   egress {
@@ -48,9 +48,9 @@ resource "aws_security_group" "tf-ecs-sg" {
   }
 }
 
-
-resource "aws_security_group" "tf_vpc_ecs_sg" {
-  name   = "${var.pjt_name}-vpc-ecs-sg"
+# ECR Endpoint Security group
+resource "aws_security_group" "tf_vpc_ecr_sg" {
+  name   = "${var.pjt_name}-vpc-ecr-sg"
   vpc_id = var.vpc_id
 
   ingress {
@@ -68,7 +68,7 @@ resource "aws_security_group" "tf_vpc_ecs_sg" {
   }
 
   tags = {
-    Name = "${var.pjt_name}_vpc_ecs_sg"
+    Name = "${var.pjt_name}_vpc_ecr_sg"
   }
 }
 

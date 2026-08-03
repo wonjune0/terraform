@@ -15,7 +15,7 @@ resource "aws_vpc_endpoint" "tf_ecr_api" {
   service_name        = "com.amazonaws.ap-northeast-2.ecr.api"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.private_subnet_ids
-  security_group_ids  = [var.vpc_ecs_sg_id]
+  security_group_ids  = [var.vpc_ecr_sg_id]
   private_dns_enabled = true
 
   tags = {
@@ -28,7 +28,7 @@ resource "aws_vpc_endpoint" "tf_ecr_dkr" {
   service_name        = "com.amazonaws.ap-northeast-2.ecr.dkr"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.private_subnet_ids
-  security_group_ids  = [var.vpc_ecs_sg_id]
+  security_group_ids  = [var.vpc_ecr_sg_id]
   private_dns_enabled = true
 
   tags = {

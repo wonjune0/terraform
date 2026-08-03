@@ -27,7 +27,7 @@ module "vpc_endpoint" {
   private_subnet_ids       = module.subnet.prisubnet_ids
   private_route_table_ids  = module.route_table.pri_rt_ids
   s3_endpoint_service_name = var.s3_endpoint_service_name
-  vpc_ecs_sg_id            = module.security_groups.vpc_ecs_sg_id
+  vpc_ecr_sg_id            = module.security_groups.vpc_ecr_sg_id
   pjt_name                 = var.pjt_name
 }
 
@@ -50,4 +50,23 @@ module "alb" {
   alb_sg        = module.security_groups.alb_sg_id
   prisubnet_ids = module.subnet.prisubnet_ids
   pjt_name      = var.pjt_name
+}
+
+module "s3" {
+  source = "./modules/s3_module"
+}
+
+module "iam" {
+  source   = "./modules/iam_module"
+  pjt_name = var.pjt_name
+}
+
+module "ecs" {
+  source                 = "./modules/ecs_module"
+  ecs_task_execution_arn = module.iam.tf_ecs_task_execution_role_arn
+  ecr_url                = module.ecr.ecr_url
+  private_subnet_ids     = module.subnet.prisubnet_ids
+  ecs_sg_id              = module.security_groups.ecs_sg_id
+  alb_target_group_arn   = module.alb.alb_target_group_arn
+  pjt_name               = var.pjt_name
 }

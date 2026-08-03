@@ -22,6 +22,6 @@ variable "pjt_name" {
   type = string
 }
 
-variable "vpc_ecs_sg_id" {
+variable "vpc_ecr_sg_id" {
   type = string
 }

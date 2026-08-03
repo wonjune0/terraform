@@ -1,0 +1,3 @@
+output "tf_ecs_task_execution_role_arn" {
+  value = aws_iam_role.tf_ecs_task_execution_role.arn
+}
