@@ -33,15 +33,3 @@ resource "aws_acm_certificate_validation" "tf_acm_cert_validation" {
   certificate_arn         = aws_acm_certificate.tf_acm_certificate.arn
   validation_record_fqdns = [for record in aws_route53_record.tf_record_validation : record.fqdn]
 }
-
-resource "aws_route53_record" "cloudfront_alias" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = var.sub_domain
-  type    = "A"
-
-  alias {
-    name                   = var.cloudfront_domain_name
-    zone_id                = var.cloudfront_hosted_zone_id
-    evaluate_target_health = false
-  }
-}

@@ -84,17 +84,35 @@ module "cloudfront" {
   alb_dns_name                   = module.alb.alb_dns_name
   cloudfront_secret_header_value = random_password.cloudfront_secret.result
   sub_domain                     = var.sub_domain
-  acm_certificate_arn            = module.route53.acm_certificate_arn
+  acm_certificate_arn            = module.acm.acm_certificate_arn
   pjt_name                       = var.pjt_name
 }
 
+module "acm" {
+  source      = "./modules/acm_module"
+  domain_name = var.domain_name
+  sub_domain  = var.sub_domain
+  providers = {
+    aws = aws.us_east_1
+  }
+}
+
 module "route53" {
-  source                    = "./modules/rout53_module"
+  source                    = "./modules/route53_module"
   domain_name               = var.domain_name
   sub_domain                = var.sub_domain
   cloudfront_domain_name    = module.cloudfront.cloudfront_domain_name
   cloudfront_hosted_zone_id = module.cloudfront.cloudfront_hosted_zone_id
-  providers = {
-    aws = aws.us_east_1
-  }
+  hosted_zone_id            = module.acm.hosted_zone_id
+}
+
+module "db" {
+  source            = "./modules/db_module"
+  prisubnet_ids     = module.subnet.prisubnet_ids
+  vpc_id            = module.vpc.vpc_id
+  ecs_sg_id         = module.security_groups.ecs_sg_id
+  db_name           = var.db_name
+  db_admin_user     = var.db_admin_user
+  db_admin_password = var.db_admin_password
+  pjt_name          = var.pjt_name
 }

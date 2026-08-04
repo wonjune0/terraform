@@ -11,8 +11,8 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
   family                   = "${var.pjt_name}_task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "2048"
-  memory                   = "4096"
+  cpu                      = "512"
+  memory                   = "1024"
   execution_role_arn       = var.ecs_task_execution_arn
 
   container_definitions = jsonencode([
@@ -53,5 +53,30 @@ resource "aws_ecs_service" "tf_service" {
     target_group_arn = var.alb_target_group_arn
     container_name   = "app"
     container_port   = 80
+  }
+}
+
+resource "aws_appautoscaling_target" "tf_ecs_target" {
+  min_capacity       = 2
+  max_capacity       = 10
+  resource_id        = "service/${aws_ecs_cluster.tf_ecs_cluster.name}/${aws_ecs_service.tf_service.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "tf_ecs_policy" {
+  name               = "${var.pjt_name}_cpu_autoscaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.tf_ecs_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.tf_ecs_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.tf_ecs_target.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value       = 70.0
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 60
   }
 }

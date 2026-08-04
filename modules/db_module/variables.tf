@@ -1,24 +1,16 @@
-variable "region_name" {
-  type = string
-}
-
 variable "pjt_name" {
   type = string
 }
 
-variable "vpc_cidr_block" {
+variable "prisubnet_ids" {
+  type = list(string)
+}
+
+variable "vpc_id" {
   type = string
 }
 
-variable "s3_endpoint_service_name" {
-  type = string
-}
-
-variable "domain_name" {
-  type = string
-}
-
-variable "sub_domain" {
+variable "ecs_sg_id" {
   type = string
 }
 
