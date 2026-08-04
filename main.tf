@@ -94,4 +94,7 @@ module "route53" {
   sub_domain                = var.sub_domain
   cloudfront_domain_name    = module.cloudfront.cloudfront_domain_name
   cloudfront_hosted_zone_id = module.cloudfront.cloudfront_hosted_zone_id
+  providers = {
+    aws = aws.us_east_1
+  }
 }
