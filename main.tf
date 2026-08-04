@@ -116,3 +116,20 @@ module "db" {
   db_admin_password = var.db_admin_password
   pjt_name          = var.pjt_name
 }
+
+module "sns" {
+  source      = "./modules/notification_module"
+  alarm_email = var.alarm_email
+  pjt_name    = var.pjt_name
+}
+
+module "cloudwatch" {
+  source              = "./modules/cloudwatch_module"
+  sns_topic_arn       = module.sns.sns_topic_arn
+  alb_targetgroup_arn = module.alb.alb_target_group_arn
+  alb_arn             = module.alb.alb_arn
+  ecs_cluster_name    = module.ecs.ecs_cluster_name
+  ecs_service_name    = module.ecs.ecs_service_name
+  db_instance_ids     = module.db.db_instance_ids
+  pjt_name            = var.pjt_name
+}

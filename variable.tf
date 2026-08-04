@@ -33,3 +33,7 @@ variable "db_admin_user" {
 variable "db_admin_password" {
   type = string
 }
+
+variable "alarm_email" {
+  type = string
+}
