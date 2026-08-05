@@ -61,17 +61,19 @@ module "alb" {
 }
 
 module "s3" {
-  source = "./modules/s3_module"
+  source   = "./modules/s3_module"
+  pjt_name = var.pjt_name
 }
 
 module "iam" {
-  source   = "./modules/iam_module"
-  pjt_name = var.pjt_name
+  source               = "./modules/iam_module"
+  db_backup_bucket_arn = module.s3.db_backup_bucket_arn
+  pjt_name             = var.pjt_name
 }
 
 module "ecs" {
   source                 = "./modules/ecs_module"
-  ecs_task_execution_arn = module.iam.tf_ecs_task_execution_role_arn
+  ecs_task_execution_arn = module.iam.ecs_task_execution_role_arn
   ecr_url                = module.ecr.ecr_url
   private_subnet_ids     = module.subnet.prisubnet_ids
   ecs_sg_id              = module.security_groups.ecs_sg_id
@@ -107,14 +109,15 @@ module "route53" {
 }
 
 module "db" {
-  source            = "./modules/db_module"
-  prisubnet_ids     = module.subnet.prisubnet_ids
-  vpc_id            = module.vpc.vpc_id
-  ecs_sg_id         = module.security_groups.ecs_sg_id
-  db_name           = var.db_name
-  db_admin_user     = var.db_admin_user
-  db_admin_password = var.db_admin_password
-  pjt_name          = var.pjt_name
+  source                 = "./modules/db_module"
+  prisubnet_ids          = module.subnet.prisubnet_ids
+  vpc_id                 = module.vpc.vpc_id
+  ecs_sg_id              = module.security_groups.ecs_sg_id
+  db_name                = var.db_name
+  db_admin_user          = var.db_admin_user
+  db_admin_password      = var.db_admin_password
+  rds_s3_export_role_arn = module.iam.rds_s3_export_role_arn
+  pjt_name               = var.pjt_name
 }
 
 module "sns" {
