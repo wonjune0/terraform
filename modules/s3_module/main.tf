@@ -6,9 +6,3 @@ resource "aws_s3_bucket" "example" {
   force_destroy = true
 }
 
-resource "aws_s3_bucket" "tf_db_backup_seoul" {
-  bucket        = "${var.pjt_name}-db-backup-seoul-bucket-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.region}"
-  force_destroy = false
-}
-
-

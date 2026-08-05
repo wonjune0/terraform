@@ -1,7 +1,3 @@
 output "ecs_task_execution_role_arn" {
   value = aws_iam_role.tf_ecs_task_execution_role.arn
 }
-
-output "rds_s3_export_role_arn" {
-  value = aws_iam_role.tf_rds_s3_export_role.arn
-}

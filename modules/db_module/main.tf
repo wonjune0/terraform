@@ -69,8 +69,6 @@ resource "aws_rds_cluster" "tf_aurora_cluster" {
     max_capacity = 16.0
   }
 
-  iam_roles = [var.rds_s3_export_role_arn]
-
   tags = {
     Name = "${var.pjt_name}_aurora_cluster"
   }

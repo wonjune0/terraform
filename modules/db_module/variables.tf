@@ -26,6 +26,3 @@ variable "db_admin_password" {
   type = string
 }
 
-variable "rds_s3_export_role_arn" {
-  type = string
-}
