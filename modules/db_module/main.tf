@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "tf_db_subnet_group" {
   name       = "${var.pjt_name}-db-subnet-group"
-  subnet_ids = var.prisubnet_ids
+  subnet_ids = var.dbsubnet_ids
 
   tags = {
     Name = "${var.pjt_name}_db_subnet_group"

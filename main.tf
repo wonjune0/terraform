@@ -107,7 +107,7 @@ module "route53" {
 
 module "db" {
   source            = "./modules/db_module"
-  prisubnet_ids     = module.subnet.prisubnet_ids
+  dbsubnet_ids      = module.subnet.dbsubnet_ids
   vpc_id            = module.vpc.vpc_id
   ecs_sg_id         = module.security_groups.ecs_sg_id
   db_name           = var.db_name

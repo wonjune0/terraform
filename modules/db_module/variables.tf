@@ -2,7 +2,7 @@ variable "pjt_name" {
   type = string
 }
 
-variable "prisubnet_ids" {
+variable "dbsubnet_ids" {
   type = list(string)
 }
 
