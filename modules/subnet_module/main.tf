@@ -1,4 +1,4 @@
-resource "aws_subnet" "tf_pubsubent" {
+resource "aws_subnet" "tf_pubsubnet" {
   for_each          = var.pub_subnets
   vpc_id            = var.vpc_id
   cidr_block        = each.key
