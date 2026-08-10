@@ -1,6 +1,18 @@
-region_name              = "ap-northeast-2"
-pjt_name                 = "seoul"
-vpc_cidr_block           = "172.16.0.0/16"
+region_name    = "ap-northeast-2"
+pjt_name       = "seoul"
+vpc_cidr_block = "10.0.0.0/16"
+pub_subnets = {
+  "10.0.1.0/24" = "ap-northeast-2a"
+  "10.0.2.0/24" = "ap-northeast-2c"
+}
+pri_subnets = {
+  "10.0.3.0/24" = "ap-northeast-2a"
+  "10.0.4.0/24" = "ap-northeast-2c"
+}
+db_subnets = {
+  "10.0.5.0/24" = "ap-northeast-2a"
+  "10.0.6.0/24" = "ap-northeast-2c"
+}
 s3_endpoint_service_name = "com.amazonaws.ap-northeast-2.s3"
 domain_name              = "wonjune.cloud"
 sub_domain               = "app.wonjune.cloud"

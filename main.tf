@@ -13,6 +13,9 @@ module "subnet" {
   source         = "./modules/subnet_module"
   vpc_id         = module.vpc.vpc_id
   vpc_cidr_block = var.vpc_cidr_block
+  pub_subnets    = var.pub_subnets
+  pri_subnets    = var.pri_subnets
+  db_subnets     = var.db_subnets
   pjt_name       = var.pjt_name
 }
 
