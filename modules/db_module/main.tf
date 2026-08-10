@@ -18,14 +18,6 @@ resource "aws_security_group" "tf_db_sg" {
     security_groups = [var.ecs_sg_id]
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-
   tags = {
     Name = "${var.pjt_name}_db_sg"
   }
