@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
       portMappings = [
         {
           containerPort = 80
-          hostport      = 80
+          hostPort      = 80
         }
       ]
     }

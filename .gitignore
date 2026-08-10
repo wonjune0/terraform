@@ -1,7 +1,6 @@
 # 1. Terraform Local Directory & Plugins
 # Provider 플러그인, 모듈 캐시 등 로컬 설치 파일
 .terraform/
-.terraform.lock.hcl
 
 # 2. Terraform State Files (★보안 핵심)
 # infrastructure 상태 및 민감 정보(비밀번호, API Key 등)가 평문 저장되므로 절대 올리면 안 됨
