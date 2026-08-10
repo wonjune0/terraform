@@ -57,7 +57,7 @@ resource "aws_rds_cluster" "tf_aurora_cluster" {
   engine_version                  = "8.0.mysql_aurora.3.04.0"
   database_name                   = var.db_name
   master_username                 = var.db_admin_user
-  master_password                 = var.db_admin_password
+  manage_master_user_password     = true
   db_subnet_group_name            = aws_db_subnet_group.tf_db_subnet_group.name
   vpc_security_group_ids          = [aws_security_group.tf_db_sg.id]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.tf_aurora_pg.name

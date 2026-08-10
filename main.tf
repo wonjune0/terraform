@@ -106,14 +106,13 @@ module "route53" {
 }
 
 module "db" {
-  source            = "./modules/db_module"
-  dbsubnet_ids      = module.subnet.dbsubnet_ids
-  vpc_id            = module.vpc.vpc_id
-  ecs_sg_id         = module.security_groups.ecs_sg_id
-  db_name           = var.db_name
-  db_admin_user     = var.db_admin_user
-  db_admin_password = var.db_admin_password
-  pjt_name          = var.pjt_name
+  source        = "./modules/db_module"
+  dbsubnet_ids  = module.subnet.dbsubnet_ids
+  vpc_id        = module.vpc.vpc_id
+  ecs_sg_id     = module.security_groups.ecs_sg_id
+  db_name       = var.db_name
+  db_admin_user = var.db_admin_user
+  pjt_name      = var.pjt_name
 }
 
 module "sns" {

@@ -30,10 +30,6 @@ variable "db_admin_user" {
   type = string
 }
 
-variable "db_admin_password" {
-  type = string
-}
-
 variable "alarm_email" {
   type = string
 }
