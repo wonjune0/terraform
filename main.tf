@@ -134,3 +134,15 @@ module "cloudwatch" {
   db_instance_ids     = module.db.db_instance_ids
   pjt_name            = var.pjt_name
 }
+
+module "backup" {
+  source             = "./modules/backup_module"
+  db_backup_role_arn = module.iam.db_backup_role_arn
+  db_cluster_arn     = module.db.db_cluster_arn
+  pjt_name           = var.pjt_name
+
+  providers = {
+    aws                = aws
+    aws.ap_northeast_3 = aws.ap_northeast_3
+  }
+}

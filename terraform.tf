@@ -23,3 +23,8 @@ provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
 }
+
+provider "aws" {
+  alias  = "ap_northeast_3"
+  region = "ap-northeast-3"
+}

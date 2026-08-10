@@ -24,3 +24,26 @@ resource "aws_iam_role_policy_attachment" "tf_ecs_task_execution_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+resource "aws_iam_role" "tf_db_backup" {
+  name = "${var.pjt_name}-db-dackup-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = { Service = "backup.amazonaws.com" }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "tf_backup" {
+  role       = aws_iam_role.tf_db_backup.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
+}
+
+resource "aws_iam_role_policy_attachment" "tf_restore" {
+  role       = aws_iam_role.tf_db_backup.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForRestores"
+}
