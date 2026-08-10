@@ -13,7 +13,7 @@ resource "aws_backup_plan" "tf_db_backup_plan" {
   rule {
     rule_name         = "daily_backup"
     target_vault_name = aws_backup_vault.tf_seoul.name
-    schedule          = "cron(0 15 * * *)"
+    schedule          = "cron(0 15 * * ? *)"
     start_window      = 60
     completion_window = 180
 
