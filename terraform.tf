@@ -5,6 +5,14 @@ terraform {
       version = "6.53.0"
     }
   }
+  backend "s3" {
+    bucket       = "terrafrom-state-441250065994-ap-northeast-2-an"
+    key          = "seoul/terraform.tfstate"
+    region       = "ap-northeast-2"
+    encrypt      = true
+    use_lockfile = true
+
+  }
 }
 
 provider "aws" {
