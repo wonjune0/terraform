@@ -4,7 +4,7 @@ resource "aws_backup_vault" "tf_seoul" {
 
 resource "aws_backup_vault" "tf_osaka" {
   provider = aws.ap_northeast_3
-  name     = "${var.pjt_name}-osake-backup-vault"
+  name     = "${var.pjt_name}-osaka-backup-vault"
 }
 
 resource "aws_backup_plan" "tf_db_backup_plan" {

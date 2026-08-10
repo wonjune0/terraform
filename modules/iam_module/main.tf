@@ -25,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "tf_ecs_task_execution_role_policy" {
 }
 
 resource "aws_iam_role" "tf_db_backup" {
-  name = "${var.pjt_name}-db-dackup-role"
+  name = "${var.pjt_name}-db-backup-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
