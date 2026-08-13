@@ -58,7 +58,7 @@ resource "aws_ecs_service" "tf_service" {
   }
 
   network_configuration {
-    subnets          = var.private_subnet_ids
+    subnets          = var.private_subnet_ids_list
     security_groups  = [var.ecs_sg_id]
     assign_public_ip = false
   }

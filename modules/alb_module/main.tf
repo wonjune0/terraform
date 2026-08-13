@@ -28,7 +28,7 @@ resource "aws_lb" "tf_alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_sg]
-  subnets            = var.pubsubnet_ids
+  subnets            = var.pubsubnet_ids_list
 
   tags = {
     Name = "${var.pjt_name}_alb"

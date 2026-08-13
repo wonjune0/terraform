@@ -10,7 +10,7 @@ variable "ecr_url" {
   type = string
 }
 
-variable "private_subnet_ids" {
+variable "private_subnet_ids_list" {
   type = list(string)
 }
 

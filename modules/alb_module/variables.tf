@@ -10,7 +10,7 @@ variable "alb_sg" {
   type = string
 }
 
-variable "pubsubnet_ids" {
+variable "pubsubnet_ids_list" {
   type = list(string)
 }
 

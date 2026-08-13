@@ -6,11 +6,11 @@ variable "igw_id" {
 }
 
 variable "pub_subnets" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "pri_subnets" {
-  type = list(string)
+  type = map(string)
 }
 
 variable "pjt_name" {

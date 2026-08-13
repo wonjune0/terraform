@@ -23,8 +23,8 @@ module "route_table" {
   source      = "./modules/route_table_module"
   vpc_id      = module.vpc.vpc_id
   igw_id      = module.vpc.igw_id
-  pub_subnets = module.subnet.pubsubnet_ids
-  pri_subnets = module.subnet.prisubnet_ids
+  pub_subnets = module.subnet.pubsubnet_ids_map
+  pri_subnets = module.subnet.prisubnet_ids_map
   pjt_name    = var.pjt_name
 }
 
@@ -32,7 +32,7 @@ module "vpc_endpoint" {
   source                   = "./modules/vpc_endpoint_module"
   vpc_id                   = module.vpc.vpc_id
   vpc_cidr_block           = var.vpc_cidr_block
-  private_subnet_ids       = module.subnet.prisubnet_ids
+  private_subnet_ids_list  = module.subnet.prisubnet_ids_list
   private_route_table_ids  = module.route_table.pri_rt_ids
   s3_endpoint_service_name = var.s3_endpoint_service_name
   vpc_ecr_sg_id            = module.security_groups.vpc_ecr_sg_id
@@ -56,7 +56,7 @@ module "alb" {
   source                         = "./modules/alb_module"
   vpc_id                         = module.vpc.vpc_id
   alb_sg                         = module.security_groups.alb_sg_id
-  pubsubnet_ids                  = module.subnet.pubsubnet_ids
+  pubsubnet_ids_list             = module.subnet.pubsubnet_ids_list
   pjt_name                       = var.pjt_name
   cloudfront_secret_header_value = random_password.cloudfront_secret.result
 }
@@ -73,18 +73,18 @@ module "iam" {
 }
 
 module "ecs" {
-  source                 = "./modules/ecs_module"
-  ecs_task_execution_arn = module.iam.ecs_task_execution_role_arn
-  ecr_url                = module.ecr.ecr_url
-  private_subnet_ids     = module.subnet.prisubnet_ids
-  ecs_sg_id              = module.security_groups.ecs_sg_id
-  alb_target_group_arn   = module.alb.alb_target_group_arn
-  db_cluster_endpoint    = module.db.db_cluster_endpoint
-  db_name                = var.db_name
-  db_admin_user          = var.db_admin_user
-  db_master_secret_arn   = module.db.db_master_secret_arn
-  image_tag              = var.image_tag
-  pjt_name               = var.pjt_name
+  source                  = "./modules/ecs_module"
+  ecs_task_execution_arn  = module.iam.ecs_task_execution_role_arn
+  ecr_url                 = module.ecr.ecr_url
+  private_subnet_ids_list = module.subnet.prisubnet_ids_list
+  ecs_sg_id               = module.security_groups.ecs_sg_id
+  alb_target_group_arn    = module.alb.alb_target_group_arn
+  db_cluster_endpoint     = module.db.db_cluster_endpoint
+  db_name                 = var.db_name
+  db_admin_user           = var.db_admin_user
+  db_master_secret_arn    = module.db.db_master_secret_arn
+  image_tag               = var.image_tag
+  pjt_name                = var.pjt_name
 }
 
 module "cloudfront" {
