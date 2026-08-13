@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "tf_ecs_secrets" {
       {
         Effect   = "Allow"
         Action   = ["secretsmanager:GetSecretValue"]
-        Resource = [var.db_master_secret_arn]
+        Resource = [var.db_master_secret_arn, var.jwt_secret_arn]
       }
     ]
   })

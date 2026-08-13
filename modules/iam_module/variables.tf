@@ -5,3 +5,7 @@ variable "pjt_name" {
 variable "db_master_secret_arn" {
   type = string
 }
+
+variable "jwt_secret_arn" {
+  type = string
+}

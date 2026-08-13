@@ -35,7 +35,8 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
       ]
 
       secrets = [
-        { name = "DB_PASSWORD", valueFrom = "${var.db_master_secret_arn}:password::" }
+        { name = "DB_PASSWORD", valueFrom = "${var.db_master_secret_arn}:password::" },
+        { name = "JWT_SECRET", valueFrom = var.jwt_secret_arn }
       ]
     }
   ])

@@ -41,3 +41,7 @@ variable "db_master_secret_arn" {
 variable "image_tag" {
   type = string
 }
+
+variable "jwt_secret_arn" {
+  type = string
+}

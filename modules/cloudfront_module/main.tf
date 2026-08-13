@@ -2,7 +2,7 @@ resource "aws_cloudfront_distribution" "tf_cloudfront" {
   enabled             = true
   is_ipv6_enabled     = true
   comment             = "${var.pjt_name} CloudFront Distribution"
-  default_root_object = "" # Single Page App이 아니면 빈값 유지 가능
+  default_root_object = "index.html" # Single Page App이 아니면 빈값 유지 가능
 
   aliases = [var.sub_domain]
 
@@ -25,11 +25,28 @@ resource "aws_cloudfront_distribution" "tf_cloudfront" {
     }
   }
 
-  # 2. 캐시 및 동작(Behavior) 설정
+  # frontend code s3
+  origin {
+    domain_name              = var.frontend_bucket_name
+    origin_id                = "S3_frontend_${var.pjt_name}"
+    origin_access_control_id = aws_cloudfront_origin_access_control.tf_frontend_oac.id
+  }
+
   default_cache_behavior {
+    target_origin_id       = "S3_frontend_${var.pjt_name}"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    compress               = true
+  }
+
+  # 2. 캐시 및 동작(Behavior) 설정
+  ordered_cache_behavior {
+    path_pattern     = "/api/*"
+    target_origin_id = "ALB_${var.pjt_name}"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "ALB_${var.pjt_name}"
 
     # AWS Managed Caching Policy (CachingDisabled 또는 CachingOptimized)
     # 동적 웹 앱/API 테스트용으로는 CachingDisabled 추천
@@ -56,3 +73,12 @@ resource "aws_cloudfront_distribution" "tf_cloudfront" {
     Name = "${var.pjt_name}_cloudfront"
   }
 }
+
+
+resource "aws_cloudfront_origin_access_control" "tf_frontend_oac" {
+  name                              = "${var.pjt_name}-frontend-oac"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+

@@ -64,13 +64,15 @@ module "alb" {
 }
 
 module "s3" {
-  source   = "./modules/s3_module"
-  pjt_name = var.pjt_name
+  source                      = "./modules/s3_module"
+  cloudfront_distribution_arn = module.cloudfront.cloudfront_distribution_arn
+  pjt_name                    = var.pjt_name
 }
 
 module "iam" {
   source               = "./modules/iam_module"
   db_master_secret_arn = module.db.db_master_secret_arn
+  jwt_secret_arn       = module.backend_secrets.jwt_secret_arn
   pjt_name             = var.pjt_name
 }
 
@@ -86,6 +88,7 @@ module "ecs" {
   db_admin_user           = var.db_admin_user
   db_master_secret_arn    = module.db.db_master_secret_arn
   image_tag               = var.image_tag
+  jwt_secret_arn          = module.backend_secrets.jwt_secret_arn
   pjt_name                = var.pjt_name
 }
 
@@ -95,6 +98,7 @@ module "cloudfront" {
   cloudfront_secret_header_value = random_password.cloudfront_secret.result
   sub_domain                     = var.sub_domain
   acm_certificate_arn            = module.acm.acm_certificate_arn
+  frontend_bucket_name           = module.s3.frontend_bucket_name
   pjt_name                       = var.pjt_name
 }
 
@@ -154,3 +158,10 @@ module "backup" {
     aws.ap_northeast_3 = aws.ap_northeast_3
   }
 }
+
+module "backend_secrets" {
+  source   = "./modules/backend_secrets_module"
+  pjt_name = var.pjt_name
+}
+
+

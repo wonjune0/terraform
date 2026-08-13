@@ -17,3 +17,7 @@ variable "sub_domain" {
 variable "acm_certificate_arn" {
   type = string
 }
+
+variable "frontend_bucket_name" {
+  type = string
+}
