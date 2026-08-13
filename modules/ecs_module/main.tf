@@ -38,6 +38,15 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
         { name = "DB_PASSWORD", valueFrom = "${var.db_master_secret_arn}:password::" },
         { name = "JWT_SECRET", valueFrom = var.jwt_secret_arn }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/${var.pjt_name}"
+          "awslogs-region"        = "ap-northeast-2"
+          "awslogs-stream-prefix" = "app"
+        }
+      }
     }
   ])
 
@@ -45,6 +54,12 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
     ignore_changes = [container_definitions]
   }
 }
+
+resource "aws_cloudwatch_log_group" "ecs" {
+  name              = "/ecs/${var.pjt_name}"
+  retention_in_days = 7
+}
+
 
 resource "aws_ecs_service" "tf_service" {
   name            = "${var.pjt_name}_service"
