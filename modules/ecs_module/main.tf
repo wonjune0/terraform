@@ -29,6 +29,7 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
       ]
 
       environment = [
+        { name = "SPRING_PROFILES_ACTIVE", value = "prod" },
         { name = "DB_HOST", value = var.db_cluster_endpoint },
         { name = "DB_NAME", value = var.db_name },
         { name = "DB_USERNAME", value = var.db_admin_user }
