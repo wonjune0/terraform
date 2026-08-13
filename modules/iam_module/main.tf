@@ -47,3 +47,19 @@ resource "aws_iam_role_policy_attachment" "tf_restore" {
   role       = aws_iam_role.tf_db_backup.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForRestores"
 }
+
+resource "aws_iam_role_policy" "tf_ecs_secrets" {
+  name = "${var.pjt_name}-ecs-secrets-policy"
+  role = aws_iam_role.tf_ecs_task_execution_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["secretsmanager:GetSecretValue"]
+        resource = [var.db_master_secret_arn]
+      }
+    ]
+  })
+}

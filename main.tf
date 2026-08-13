@@ -67,8 +67,9 @@ module "s3" {
 }
 
 module "iam" {
-  source   = "./modules/iam_module"
-  pjt_name = var.pjt_name
+  source               = "./modules/iam_module"
+  db_master_secret_arn = module.db.db_master_secret_arn
+  pjt_name             = var.pjt_name
 }
 
 module "ecs" {
@@ -78,6 +79,11 @@ module "ecs" {
   private_subnet_ids     = module.subnet.prisubnet_ids
   ecs_sg_id              = module.security_groups.ecs_sg_id
   alb_target_group_arn   = module.alb.alb_target_group_arn
+  db_cluster_endpoint    = module.db.db_cluster_endpoint
+  db_name                = var.db_name
+  db_admin_user          = var.db_admin_user
+  db_master_secret_arn   = module.db.db_master_secret_arn
+  image_tag              = var.image_tag
   pjt_name               = var.pjt_name
 }
 

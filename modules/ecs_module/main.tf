@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "${var.ecr_url}:latest"
+      image     = "${var.ecr_url}:${var.image_tag}"
       essential = true
 
       portMappings = [
@@ -27,8 +27,22 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
           hostPort      = 80
         }
       ]
+
+      environment = [
+        { name = "DB_HOST", value = var.db_cluster_endpoint },
+        { name = "DB_NAME", value = var.db_name },
+        { name = "DB_USER", value = var.db_admin_user }
+      ]
+
+      secrets = [
+        { name = "DB_PASSWORD", valueFrom = "${var.db_master_secret_arn}:password::" }
+      ]
     }
   ])
+
+  lifecycle {
+    ignore_changes = [container_definitions]
+  }
 }
 
 resource "aws_ecs_service" "tf_service" {

@@ -45,3 +45,8 @@ variable "db_admin_user" {
 variable "alarm_email" {
   type = string
 }
+
+variable "image_tag" {
+  type    = string
+  default = "latest"
+}
