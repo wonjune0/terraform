@@ -48,7 +48,7 @@ variable "alarm_email" {
 
 variable "image_tag" {
   type    = string
-  default = "latest"
+  default = "initital"
 }
 
 variable "ecr_api" {
