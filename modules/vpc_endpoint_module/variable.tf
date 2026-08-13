@@ -25,3 +25,11 @@ variable "pjt_name" {
 variable "vpc_ecr_sg_id" {
   type = string
 }
+
+variable "ecr_api" {
+  type = string
+}
+
+variable "ecr_dkr" {
+  type = string
+}

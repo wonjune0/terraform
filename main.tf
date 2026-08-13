@@ -36,6 +36,8 @@ module "vpc_endpoint" {
   private_route_table_ids  = module.route_table.pri_rt_ids
   s3_endpoint_service_name = var.s3_endpoint_service_name
   vpc_ecr_sg_id            = module.security_groups.vpc_ecr_sg_id
+  ecr_api                  = var.ecr_api
+  ecr_dkr                  = var.ecr_dkr
   pjt_name                 = var.pjt_name
 }
 

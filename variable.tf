@@ -50,3 +50,11 @@ variable "image_tag" {
   type    = string
   default = "latest"
 }
+
+variable "ecr_api" {
+  type = string
+}
+
+variable "ecr_dkr" {
+  type = string
+}

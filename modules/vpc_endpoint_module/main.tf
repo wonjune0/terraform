@@ -12,7 +12,7 @@ resource "aws_vpc_endpoint" "tf_s3_gw" {
 
 resource "aws_vpc_endpoint" "tf_ecr_api" {
   vpc_id              = var.vpc_id
-  service_name        = "com.amazonaws.ap-northeast-2.ecr.api"
+  service_name        = "var.ecr_api"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.private_subnet_ids_list
   security_group_ids  = [var.vpc_ecr_sg_id]
@@ -25,7 +25,7 @@ resource "aws_vpc_endpoint" "tf_ecr_api" {
 
 resource "aws_vpc_endpoint" "tf_ecr_dkr" {
   vpc_id              = var.vpc_id
-  service_name        = "com.amazonaws.ap-northeast-2.ecr.dkr"
+  service_name        = "var.ecr_dkr"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.private_subnet_ids_list
   security_group_ids  = [var.vpc_ecr_sg_id]
