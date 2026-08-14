@@ -70,10 +70,12 @@ module "s3" {
 }
 
 module "iam" {
-  source               = "./modules/iam_module"
-  db_master_secret_arn = module.db.db_master_secret_arn
-  jwt_secret_arn       = module.backend_secrets.jwt_secret_arn
-  pjt_name             = var.pjt_name
+  source                      = "./modules/iam_module"
+  db_master_secret_arn        = module.db.db_master_secret_arn
+  jwt_secret_arn              = module.backend_secrets.jwt_secret_arn
+  frontend_bucket_arn         = module.s3.frontend_bucket_arn
+  cloudfront_distribution_arn = module.cloudfront.cloudfront_distribution_arn
+  pjt_name                    = var.pjt_name
 }
 
 module "ecs" {

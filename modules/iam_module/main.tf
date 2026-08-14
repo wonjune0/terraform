@@ -1,3 +1,36 @@
+data "aws_iam_user" "frontend-developer" {
+  user_name = "frontend-developer"
+}
+
+resource "aws_iam_user_policy" "frontend_deploy" {
+  name = "frontend-developer"
+  user = data.aws_iam_user.frontend-developer.user_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket"]
+        Resource = var.frontend_bucket_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"]
+        Resource = "${var.frontend_bucket_arn}/*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["cloudfront:CreateInvalidation"]
+        Resource = var.cloudfront_distribution_arn
+      }
+    ]
+  })
+}
+
+
+
+
 resource "aws_iam_role" "tf_ecs_task_execution_role" {
   name = "${var.pjt_name}-ecs-task-execution_role"
 
