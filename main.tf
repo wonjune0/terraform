@@ -92,6 +92,8 @@ module "ecs" {
   image_tag               = var.image_tag
   jwt_secret_arn          = module.backend_secrets.jwt_secret_arn
   pjt_name                = var.pjt_name
+
+  depends_on = [module.iam]
 }
 
 module "cloudfront" {
