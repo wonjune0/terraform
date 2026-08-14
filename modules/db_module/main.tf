@@ -54,7 +54,8 @@ resource "aws_rds_cluster" "tf_aurora_cluster" {
   vpc_security_group_ids          = [aws_security_group.tf_db_sg.id]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.tf_aurora_pg.name
 
-  skip_final_snapshot = true
+  storage_encrypted   = true
+  skip_final_snapshot = false
 
   serverlessv2_scaling_configuration {
     min_capacity = 0.5

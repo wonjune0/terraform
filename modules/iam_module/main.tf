@@ -2,6 +2,10 @@ data "aws_iam_user" "frontend-developer" {
   user_name = "frontend-developer"
 }
 
+data "aws_caller_identity" "current_account_id" {}
+data "aws_region" "current_region" {
+}
+
 resource "aws_iam_user_policy" "frontend_deploy" {
   name = "frontend-developer"
   user = data.aws_iam_user.frontend-developer.user_name
@@ -23,6 +27,11 @@ resource "aws_iam_user_policy" "frontend_deploy" {
         Effect   = "Allow"
         Action   = ["cloudfront:CreateInvalidation"]
         Resource = var.cloudfront_distribution_arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["ssm:GetParameter"]
+        Resource = "arn:aws:ssm:${data.aws_region.current_region.region}:${data.aws_caller_identity.current_account_id.account_id}:parameter/${var.pjt_name}/*"
       }
     ]
   })

@@ -141,14 +141,14 @@ module "sns" {
 }
 
 module "cloudwatch" {
-  source              = "./modules/cloudwatch_module"
-  sns_topic_arn       = module.sns.sns_topic_arn
-  alb_targetgroup_arn = module.alb.alb_target_group_arn
-  alb_arn             = module.alb.alb_arn
-  ecs_cluster_name    = module.ecs.ecs_cluster_name
-  ecs_service_name    = module.ecs.ecs_service_name
-  db_instance_ids     = module.db.db_instance_ids
-  pjt_name            = var.pjt_name
+  source                      = "./modules/cloudwatch_module"
+  sns_topic_arn               = module.sns.sns_topic_arn
+  alb_target_group_arn_suffix = module.alb.alb_target_group_arn_suffix
+  alb_arn_suffix              = module.alb.alb_arn_suffix
+  ecs_cluster_name            = module.ecs.ecs_cluster_name
+  ecs_service_name            = module.ecs.ecs_service_name
+  db_instance_ids             = module.db.db_instance_ids
+  pjt_name                    = var.pjt_name
 }
 
 module "backup" {
@@ -168,4 +168,9 @@ module "backend_secrets" {
   pjt_name = var.pjt_name
 }
 
-
+module "ssm" {
+  source                     = "./modules/ssm_module"
+  cloudfront_distribution_id = module.cloudfront.cloudfront_distribution_id
+  frontend_bucket_id         = module.s3.frontend_bucket_id
+  pjt_name                   = var.pjt_name
+}

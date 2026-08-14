@@ -12,8 +12,8 @@ resource "aws_cloudwatch_metric_alarm" "tf_alb_5XX" {
   alarm_actions     = [var.sns_topic_arn]
 
   dimensions = {
-    TargetGroup  = var.alb_targetgroup_arn
-    LoadBalancer = var.alb_arn
+    TargetGroup  = var.alb_target_group_arn_suffix
+    LoadBalancer = var.alb_arn_suffix
   }
 }
 
