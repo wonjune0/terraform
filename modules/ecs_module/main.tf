@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
   ])
 
   lifecycle {
-    ignore_changes = [container_definitions, task_definition]
+    ignore_changes = [container_definitions]
   }
 }
 
@@ -77,7 +77,7 @@ resource "aws_ecs_service" "tf_service" {
 
   # Auto Scaling 동작 시 수량 덮어쓰기 방지
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [desired_count, task_definition]
   }
 
   network_configuration {
