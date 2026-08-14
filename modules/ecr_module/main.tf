@@ -3,6 +3,8 @@ resource "aws_ecr_repository" "app_repo" {
   image_tag_mutability = "IMMUTABLE"                # 태그 덮어쓰기 방지 (보안 및 롤백 안전성 확보)
   # MUTABLE : 동일한 태그로 푸시하면 기존 이미지를 덮어씀(default)
 
+  force_delete = true
+
   # 이미지 푸시 시 취약점 자동 스캔 활성화
   image_scanning_configuration {
     scan_on_push = true

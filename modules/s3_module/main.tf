@@ -1,7 +1,8 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "tf_frontend_bucket" {
-  bucket = "${var.pjt_name}-frontend-${data.aws_caller_identity.current.account_id}"
+  bucket        = "${var.pjt_name}-frontend-${data.aws_caller_identity.current.account_id}"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_public_access_block" "tf_frontend_bucket_access" {
