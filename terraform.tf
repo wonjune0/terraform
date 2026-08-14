@@ -16,16 +16,35 @@ terraform {
   }
 }
 
+locals {
+  common_tag = {
+    Project   = var.pjt_name
+    ManagedBy = "terraform"
+  }
+}
+
 provider "aws" {
   region = var.region_name
+
+  default_tags {
+    tags = local.common_tag
+  }
 }
 
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
+
+  default_tags {
+    tags = local.common_tag
+  }
 }
 
 provider "aws" {
   alias  = "ap_northeast_3"
   region = "ap-northeast-3"
+
+  default_tags {
+    tags = local.common_tag
+  }
 }
