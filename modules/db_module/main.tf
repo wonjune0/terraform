@@ -55,7 +55,7 @@ resource "aws_rds_cluster" "tf_aurora_cluster" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.tf_aurora_pg.name
 
   storage_encrypted   = true
-  skip_final_snapshot = false
+  skip_final_snapshot = false # 실제 배포 시에는 snapshot 남겨야 하므로 true
 
   serverlessv2_scaling_configuration {
     min_capacity = 0.5
