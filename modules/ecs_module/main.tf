@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
   ])
 
   lifecycle {
-    ignore_changes = [container_definitions]
+    ignore_changes = [container_definitions, task_definition]
   }
 }
 
@@ -63,11 +63,17 @@ resource "aws_cloudwatch_log_group" "ecs" {
 
 
 resource "aws_ecs_service" "tf_service" {
-  name            = "${var.pjt_name}_service"
-  cluster         = aws_ecs_cluster.tf_ecs_cluster.id
-  task_definition = aws_ecs_task_definition.tf_ecs_task_definition.arn
-  desired_count   = 2
-  launch_type     = "FARGATE"
+  name                              = "${var.pjt_name}_service"
+  cluster                           = aws_ecs_cluster.tf_ecs_cluster.id
+  task_definition                   = aws_ecs_task_definition.tf_ecs_task_definition.arn
+  desired_count                     = 2
+  launch_type                       = "FARGATE"
+  health_check_grace_period_seconds = 120
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
 
   # Auto Scaling 동작 시 수량 덮어쓰기 방지
   lifecycle {
