@@ -30,6 +30,12 @@ resource "aws_lb" "tf_alb" {
   security_groups    = [var.alb_sg]
   subnets            = var.pubsubnet_ids_list
 
+  # 결제 요청은 외부 게이트웨이 응답을 기다리므로 일반 조회보다 오래 걸린다.
+  # 기본값(60초)에 의존하지 않고 명시해 둔다. 이 값을 넘기면 ALB가 504를 돌려주는데,
+  # 그 시점엔 주문이 PENDING으로 남아 있으므로 클라이언트 재시도는 반드시
+  # 같은 Idempotency-Key로 나가야 한다.
+  idle_timeout = 60
+
   tags = {
     Name = "${var.pjt_name}_alb"
   }

@@ -58,3 +58,21 @@ variable "ecr_api" {
 variable "ecr_dkr" {
   type = string
 }
+
+# 재고 차감 방식. ATOMIC이 운영 기본값이고, NONE/PESSIMISTIC은 부하 테스트에서
+# 비교하기 위한 값이다. NONE은 초과 판매가 나므로 측정 목적 외에는 쓰지 않는다.
+variable "stock_strategy" {
+  type    = string
+  default = "ATOMIC"
+
+  validation {
+    condition     = contains(["ATOMIC", "PESSIMISTIC", "NONE"], var.stock_strategy)
+    error_message = "stock_strategy must be one of ATOMIC, PESSIMISTIC, NONE."
+  }
+}
+
+# 결제 실패를 헤더로 유발할 수 있게 할지 여부. 시연 촬영 때만 true로 올린다.
+variable "payment_allow_forced_failure" {
+  type    = bool
+  default = false
+}

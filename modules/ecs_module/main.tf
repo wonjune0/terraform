@@ -32,12 +32,18 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
         { name = "SPRING_PROFILES_ACTIVE", value = "prod" },
         { name = "DB_HOST", value = var.db_cluster_endpoint },
         { name = "DB_NAME", value = var.db_name },
-        { name = "DB_USERNAME", value = var.db_admin_user }
+        { name = "DB_USERNAME", value = var.db_admin_user },
+        # 재고 차감 전략. 부하 테스트에서 세 방식을 비교할 때 이미지를 다시 빌드하지 않고
+        # 이 값만 바꿔서 배포하면 된다.
+        { name = "STOCK_STRATEGY", value = var.stock_strategy },
+        # 결제 실패 주입. 시연 영상 촬영 때만 켜고 평소에는 꺼 둔다.
+        { name = "PAYMENT_ALLOW_FORCED_FAILURE", value = tostring(var.payment_allow_forced_failure) }
       ]
 
       secrets = [
         { name = "DB_PASSWORD", valueFrom = "${var.db_master_secret_arn}:password::" },
-        { name = "JWT_SECRET", valueFrom = var.jwt_secret_arn }
+        { name = "JWT_SECRET", valueFrom = var.jwt_secret_arn },
+        { name = "PAYMENT_SECRET_KEY", valueFrom = var.payment_secret_arn }
       ]
 
       logConfiguration = {
@@ -51,9 +57,12 @@ resource "aws_ecs_task_definition" "tf_ecs_task_definition" {
     }
   ])
 
-  lifecycle {
-    ignore_changes = [container_definitions]
-  }
+  # container_definitions를 무시하지 않는다.
+  # 무시하면 여기서 환경변수나 시크릿을 아무리 고쳐도 새 리비전이 등록되지 않아
+  # 컨테이너까지 전달되지 않는다. 이미지 태그를 CD가 덮어쓰는 문제는 아래
+  # aws_ecs_service의 ignore_changes = [task_definition]이 이미 막고 있다.
+  # CD는 describe-task-definition으로 최신 리비전을 받아 이미지만 바꿔 등록하므로,
+  # 여기서 등록한 환경변수/시크릿은 다음 배포에 그대로 실려 간다.
 }
 
 resource "aws_cloudwatch_log_group" "ecs" {

@@ -73,6 +73,7 @@ module "iam" {
   source                      = "./modules/iam_module"
   db_master_secret_arn        = module.db.db_master_secret_arn
   jwt_secret_arn              = module.backend_secrets.jwt_secret_arn
+  payment_secret_arn          = module.backend_secrets.payment_secret_arn
   frontend_bucket_arn         = module.s3.frontend_bucket_arn
   cloudfront_distribution_arn = module.cloudfront.cloudfront_distribution_arn
   pjt_name                    = var.pjt_name
@@ -91,7 +92,12 @@ module "ecs" {
   db_master_secret_arn    = module.db.db_master_secret_arn
   image_tag               = var.image_tag
   jwt_secret_arn          = module.backend_secrets.jwt_secret_arn
-  pjt_name                = var.pjt_name
+
+  payment_secret_arn           = module.backend_secrets.payment_secret_arn
+  stock_strategy               = var.stock_strategy
+  payment_allow_forced_failure = var.payment_allow_forced_failure
+
+  pjt_name = var.pjt_name
 
   depends_on = [module.iam]
 }
