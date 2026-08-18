@@ -10,6 +10,10 @@ variable "jwt_secret_arn" {
   type = string
 }
 
+variable "payment_secret_arn" {
+  type = string
+}
+
 variable "frontend_bucket_arn" {
   type = string
 }

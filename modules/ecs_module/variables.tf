@@ -45,3 +45,15 @@ variable "image_tag" {
 variable "jwt_secret_arn" {
   type = string
 }
+
+variable "payment_secret_arn" {
+  type = string
+}
+
+variable "stock_strategy" {
+  type = string
+}
+
+variable "payment_allow_forced_failure" {
+  type = bool
+}
